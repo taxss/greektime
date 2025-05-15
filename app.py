@@ -28,8 +28,8 @@ lateness_factors = {
 }
 
 punctuality_modifiers = {
-    "Usually on time": 0,
-    "Slightly late": 7,
+    "Minor Greeke": 0,
+    "Medium Greek": 7,
     "Very Greek": 15,
     "Extremely Greek": 30
 }

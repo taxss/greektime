@@ -156,7 +156,7 @@ st.markdown("""
 """)
 
 # Tech explanation
-st.markdown("##The Technology Behind GreekTime Predictor")
+st.markdown("## The Technology Behind GreekTime Predictor")
 st.markdown("""
 GreekTime Predictor is powered by a proprietary delay estimation engine built on bleeding-edge technologies, including:
 

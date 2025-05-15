@@ -13,7 +13,7 @@ st.markdown(
         <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//output-onlinepngtools.png"
              alt="GreekTime Predictor Logo"
              style="max-width: 220px; margin-bottom: 0.5rem;">
-        <p style="font-style: italic; color: gray;">Never trust a calendar invite again.</p>
+        <p style="font-style: italic; color: gray;">De-Greek your Calendar, for free!</p>
     </div>
     """,
     unsafe_allow_html=True

@@ -3,16 +3,51 @@ import time
 import random
 from datetime import datetime, timedelta
 
-# App config
+# App configuration
 st.set_page_config(page_title="GreekTime Predictor", page_icon="🇬🇷", layout="wide")
 
-# Logo & Header
+# Custom CSS for styling
 st.markdown("""
-<div style="text-align: center;">
+    <style>
+    /* Center the logo and tagline */
+    .logo-container {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .logo-container img {
+        max-width: 220px;
+    }
+    .logo-container p {
+        font-style: italic;
+        color: gray;
+    }
+    /* Style for the Greekness slider */
+    .stSlider > div[data-baseweb="slider"] > div {
+        background: linear-gradient(to right, #0D5BA1 0%, #0D5BA1 100%) !important;
+    }
+    /* Style for the delay factor display */
+    .delay-factor {
+        padding: 0.5rem 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .delay-factor .profile {
+        color: #0D5BA1;
+    }
+    /* Style for event type buttons */
+    .event-button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Logo and Header
+st.markdown("""
+<div class="logo-container">
     <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//output-onlinepngtools.png"
-         alt="GreekTime Predictor Logo"
-         style="max-width: 220px; margin-bottom: 0.5rem;">
-    <p style="font-style: italic; color: gray;">Advanced Ai Calendar De-Greekifier, for free!</p>
+         alt="GreekTime Predictor Logo">
+    <p>Advanced Ai Calendar De-Greekifier, for free!</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -22,7 +57,7 @@ mode = st.radio("Choose your mode:", [
     "When to invite a Greek so they’re on time?"
 ])
 
-# Event type buttons
+# Event type selection
 st.markdown("### What kind of event is it?")
 
 if "event_type" not in st.session_state:
@@ -37,31 +72,21 @@ event_options = {
 }
 
 event_labels = list(event_options.items())
-button_cols = st.columns(len(event_labels))
+cols = st.columns(len(event_labels))
 
 for i, (key, label) in enumerate(event_labels):
-    with button_cols[i]:
+    with cols[i]:
         if st.button(label, key=key):
             st.session_state.event_type = key
 
 event_type = st.session_state.event_type
 st.caption(f"**Selected Event:** {event_type}")
 
-# Greekness Slider with style
+# Greekness Slider
 MAX_DELAY_MINUTES = 46
 DELAY_VARIANCE = 3
 
 st.markdown("### How Greek is your Greek?")
-
-slider_css = """
-<style>
-.stSlider > div[data-baseweb="slider"] > div {
-    background: linear-gradient(to right, #0D5BA1 0%, #0D5BA1 100%) !important;
-}
-</style>
-"""
-
-st.markdown(slider_css, unsafe_allow_html=True)
 
 greekness_score = st.slider(
     "Slide to increase Greekness.",
@@ -86,8 +111,8 @@ else:
     greek_profile = "Extremely Greek"
 
 st.markdown(f"""
-<div style="padding: 0.5rem 0; font-size: 1.1rem;">
-<strong>Estimated Additional Delay Factor:</strong> <span style="color:#0D5BA1;"><strong>{greek_profile}</strong></span> (≈ <strong>{mod_minutes} min</strong>)
+<div class="delay-factor">
+    Estimated Additional Delay Factor: <span class="profile">{greek_profile}</span> (≈ {mod_minutes} min)
 </div>
 """, unsafe_allow_html=True)
 
@@ -174,7 +199,7 @@ st.divider()
 st.markdown("## ❓ FAQ")
 
 with st.expander("Why is my Greek coworker always late?"):
-    st.markdown("They aren't late,  **you're just early in the wrong culture.** Also: there was traffic, an ourgent call, and a need for coffee.")
+    st.markdown("They aren't late,  **you're just early in the wrong culture.** Also: there was traffic, an urgent call, and a need for coffee.")
 
 with st.expander("What if they're on time?"):
     st.markdown("It’s a trap, avoid eye contact. Tread carefully.")

@@ -3,12 +3,23 @@ import time
 import random
 from datetime import datetime, timedelta
 
-# Light theme in .streamlit/config.toml
+# App config
 st.set_page_config(page_title="GreekTime Predictor", page_icon="🇬🇷", layout="wide")
 
-st.markdown("## 🇬🇷 GreekTime Predictor")
-st.markdown("*Never trust a calendar invite again.*")
+# Centered logo at the top
+st.markdown(
+    """
+    <div style="text-align: center;">
+        <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//May%2015,%202025,%2011_45_38%20PM.png"
+             alt="GreekTime Predictor Logo"
+             style="max-width: 220px; margin-bottom: 0.5rem;">
+        <p style="font-style: italic; color: gray;">Never trust a calendar invite again.</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
+# App options
 mode = st.radio("Choose your mode:", [
     "When will the Greek actually arrive?",
     "When to invite a Greek so they’re on time?"
@@ -22,6 +33,7 @@ greek_profile = st.selectbox("What kind of Greek are we dealing with?", [
     "Minor Greek", "Slightly Greek", "Very Greek", "Extremely Greek"
 ])
 
+# Calculation logic
 lateness_factors = {
     "Casual hangout": 23,
     "Dinner": 18,
@@ -53,11 +65,12 @@ joke_lines = [
 
 st.divider()
 
+# Core logic
 if mode == "When will the Greek actually arrive?":
     user_time = st.time_input("🕒 Scheduled time")
     if st.button("📡 Predict Arrival"):
         with st.spinner(random.choice(joke_lines)):
-            time.sleep(2.5)
+            time.sleep(3.5)
         scheduled = datetime.combine(datetime.today(), user_time)
         arrival = scheduled + timedelta(minutes=total_delay)
         st.success(f"🎯 The Greek will probably arrive at **{arrival.strftime('%H:%M')}**.")
@@ -66,9 +79,8 @@ else:
     desired_time = st.time_input("🕖 Desired arrival time")
     if st.button("📩 Suggest Invite Time"):
         with st.spinner(random.choice(joke_lines)):
-            time.sleep(2.5)
+            time.sleep(3.5)
         desired = datetime.combine(datetime.today(), desired_time)
         invite_time = desired - timedelta(minutes=total_delay)
         st.success(f"📬 You should tell the Greek that the event is at **{invite_time.strftime('%H:%M')}**.")
         st.caption("They’ll still be 3 minutes late. Or maybe they’ll call and say ‘I'm five minutes away.’")
-

@@ -163,4 +163,3 @@ with st.expander("Does this work for Cypriots?"):
 
 with st.expander("Is it scientifically accurate?"):
     st.markdown("More accurate than your last 3 relationships. Calibrated to within ±3 souvlakis.")
-

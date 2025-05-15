@@ -69,6 +69,6 @@ else:
             time.sleep(2.5)
         desired = datetime.combine(datetime.today(), desired_time)
         invite_time = desired - timedelta(minutes=total_delay)
-        st.success(f"📬 You should invite the Greek at **{invite_time.strftime('%H:%M')}**.")
+        st.success(f"📬 You should tell the Greek that the event is at **{invite_time.strftime('%H:%M')}**.")
         st.caption("They’ll still be 3 minutes late. Or maybe they’ll call and say ‘I'm five minutes away.’")
 

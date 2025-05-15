@@ -145,27 +145,18 @@ else:
 
 st.divider()
 
-# ---------- Tips & Tricks ----------
-st.markdown("## Tips & Tricks to Make Greeks Arrive Sooner")
-st.markdown("""
-- **Say it’s a nameday and there’s free food.** Instant teleportation.  
-- **Tell them everyone’s already there.** Greek shame is real.  
-- **Text: “they’re talking politics without you.”** They'll break speed limits.  
-- **Only Turk joke:** _“Apparently the Turks always arrive on time.”_ Guaranteed panic.
-""")
-
 # ---------- Technology ----------
 st.markdown("## The Technology Behind GreekTime Predictor")
 st.markdown("""
 GreekTime Predictor is powered by a proprietary delay estimation engine built on bleeding-edge technologies, including:
 
-- **Quantum Probability Modeling** trained on ferry timetables and Athenian café density data.  
+- **Quantum Probability Modeling** trained on ferry timetables and Greek calendar change density data.  
 - **Space-grade Delay Propagation Systems** repurposed from spacecraft reentry systems.  
 - **Neural Excuse Networks (NENs)** trained on 87,000+ Greek WhatsApp apologies.  
-- **Geolocation Interference Algorithms** factoring in bakery stops, soccer rants, and cousin detours.  
+- **Geolocation Interference Algorithms** factoring in emergency stops, Turk Rants, and tax avoidance data.  
 - **Mood-Lag Analytics** adjusting based on how many times they’ve said “malaka” today.
 
-Each prediction is reviewed by a certified uncle from Thessaloniki with mystical delay-reading powers.
+Each prediction is reviewed by our certified support team on Mount Athos.
 """)
 
 # ---------- FAQ ----------

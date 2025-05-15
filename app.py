@@ -10,7 +10,7 @@ st.set_page_config(page_title="GreekTime Predictor", page_icon="🇬🇷", layou
 st.markdown(
     """
     <div style="text-align: center;">
-        <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//May%2015,%202025,%2011_45_38%20PM.png"
+        <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//ChatGPT%20Image%20May%2015,%202025,%2011_56_42%20PM-min.png"
              alt="GreekTime Predictor Logo"
              style="max-width: 220px; margin-bottom: 0.5rem;">
         <p style="font-style: italic; color: gray;">Never trust a calendar invite again.</p>

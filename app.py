@@ -49,23 +49,31 @@ if 'event_type' not in locals():
 
 # Greekness slider
 st.markdown("### How Greek is your Greek?")
-greekness = st.slider(
-    "Choose a value from Barely Greek to Extremely Greek",
+greekness_score = st.slider(
+    "Slide to increase the probability of delay.",
     min_value=0,
-    max_value=3,
-    value=1,
-    format="%d",
-    help="0 = Barely Greek, 3 = Extremely Greek"
+    max_value=100,
+    value=30,
+    step=1,
+    help="0 = Barely Greek, 100 = Dionysus reborn"
 )
 
-greek_labels = {
-    0: "Barely Greek",
-    1: "Slightly Greek",
-    2: "Very Greek",
-    3: "Extremely Greek"
-}
+# Delay scale: 0–30 min
+mod_minutes = round((greekness_score / 100) * 30)
 
-greek_profile = greek_labels[greekness]
+# Dynamic profile label
+if greekness_score == 0:
+    greek_profile = "Barely Greek"
+elif greekness_score < 25:
+    greek_profile = "Lightly Greek"
+elif greekness_score < 50:
+    greek_profile = "Slightly Greek"
+elif greekness_score < 75:
+    greek_profile = "Very Greek"
+else:
+    greek_profile = "Extremely Greek"
+
+st.caption(f"Profile: **{greek_profile}** | Estimated delay: **{mod_minutes} min**")
 
 # Delay logic
 lateness_factors = {
@@ -75,27 +83,32 @@ lateness_factors = {
     "Serious meeting": 8,
     "Special event": 30
 }
-
-punctuality_modifiers = {
-    "Barely Greek": 0,
-    "Slightly Greek": 7,
-    "Very Greek": 15,
-    "Extremely Greek": 30
-}
-
 base_minutes = lateness_factors.get(event_type, 10)
-mod_minutes = punctuality_modifiers.get(greek_profile, 0)
 total_delay = base_minutes + mod_minutes
 
-joke_lines = [
-    "Counting souvlakis...",
-    "Assembling excuses...",
-    "Trying to find parking in Athens...",
-    "Double-checking WhatsApp read receipts...",
-    "Greeksplaining the delay...",
-    "Consulting yiayia’s calendar...",
-    "Lighting a freddospresso and praying for punctuality..."
+# Spinner jokes based on Greekness level
+mild_jokes = [
+    "Consulting Greek calendar...",
+    "Charging GPS...",
+    "Counting ouzos...",
 ]
+moderate_jokes = [
+    "Consulting yiayia’s calendar...",
+    "Lighting a freddospresso...",
+    "Staring at sandals waiting for movement...",
+]
+extreme_jokes = [
+    "Spinning komboloi beads with maximum intention...",
+    "Double-checking WhatsApp excuses...",
+    "Greeksplaining traffic to a satnav...",
+]
+
+if greekness_score <= 25:
+    joke_lines = mild_jokes
+elif greekness_score <= 75:
+    joke_lines = moderate_jokes
+else:
+    joke_lines = extreme_jokes
 
 st.divider()
 
@@ -124,9 +137,6 @@ st.divider()
 # Tips & Tricks
 st.markdown("## 🧠 Tips & Tricks to Make Greeks Arrive Sooner (or Less Late)")
 st.markdown("""
-- **Say a Turk is already there.** The national rivalry is strong enough to bend time.
-- **Tell them their cousin who owes them money just arrived.** They’ll teleport in.
-- **Mention their mom is already there.** Fear and guilt will override all social inertia.
 - **Blame the Turks.** Doesn’t matter how. “The Turks are never late” often works.
 - **Say there's free parking, even if there isn't.** It’s called tactical misinformation.
 - **Tell them their ex is already inside.** Rage is more powerful than coffee.
@@ -137,15 +147,14 @@ st.markdown("""
 # Tech explanation
 st.markdown("## 🤖 The Technology Behind GreekTime Predictor")
 st.markdown("""
-GreekTime Predictor runs on an advanced stack blending AI, quantum computing, and geopolitical sarcasm. Key components include:
+GreekTime Predictor runs on an advanced stack blending AI, quantum computing, and geopolitical databases. Key components include:
 
-- **Quantum Probability Modeling** trained on Cycladic ferry data and Byzantine gossip delays.
-- **Space-grade Delay Propagation Systems**, originally developed to model time distortion in long-distance relationships.
+- **Quantum Probability Modeling** trained on Cycladic ferry data and Byzantine transcripts.
+- **Space-grade Delay Propagation Systems**, originally developed to model time distortion in interstellar travel.
 - **Neural Excuse Networks (NENs)** trained on 87,000 Greek text messages containing the words “sorry,” “traffic,” and “you won’t believe this.”
-- **Geolocation Interference Layers**, predicting whether a Greek will stop at a bakery, relative’s house, or small church en route.
 - **Emotional Latency Indexing**, which adjusts arrival times based on mood swings, political arguments, and Mercury retrograde.
 
-Each prediction is independently validated by a retired uncle from Thessaloniki using a wood chair, a frappe, and intuition.
+Each prediction is independently validated by our dedicated team on Mount Athos.
 """)
 
 # FAQ
@@ -153,10 +162,10 @@ st.divider()
 st.markdown("## ❓ Frequently Asked Questions")
 
 with st.expander("Why is my Greek coworker always late?"):
-    st.markdown("They aren't late — **you're just early in the wrong culture.** Also: they needed to stop for a coffee, a phone call, a cousin, a souvlaki, and an existential crisis.")
+    st.markdown("They aren't late, **you're just early or wrong.** Also: they needed to stop for a coffee, a phone call, a souvlaki, or an existential crisis.")
 
 with st.expander("What if they're on time?"):
-    st.markdown("You're in a simulation. Or it's a trap. Remain calm, don't make eye contact, and check your calendar again.")
+    st.markdown("It's a trap. Remain calm, don't make eye contact, and check your calendar again.")
 
 with st.expander("Does this work for Cypriots?"):
     st.markdown("Yes, but with **+45% delay buffer** and higher risk of political debate on arrival.")

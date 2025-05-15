@@ -53,6 +53,13 @@ DELAY_VARIANCE = 3
 
 st.markdown("### How Greek is your Greek?")
 
+slider_css = """
+<style>
+.stSlider > div[data-baseweb="slider"] > div {
+    background: linear-gradient(to right, #0D5BA1 0%, #0D5BA1 100%) !important;
+}
+</style>
+"""
 
 st.markdown(slider_css, unsafe_allow_html=True)
 

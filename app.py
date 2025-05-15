@@ -3,10 +3,10 @@ import time
 import random
 from datetime import datetime, timedelta
 
-# Config
+# App config
 st.set_page_config(page_title="GreekTime Predictor", page_icon="🇬🇷", layout="wide")
 
-# Logo
+# Logo & Header
 st.markdown("""
 <div style="text-align: center;">
     <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//output-onlinepngtools.png"
@@ -22,7 +22,7 @@ mode = st.radio("Choose your mode:", [
     "When to invite a Greek so they’re on time?"
 ])
 
-# Event type buttons in grid
+# Event type buttons
 st.markdown("### What kind of event is it?")
 
 if "event_type" not in st.session_state:
@@ -37,31 +37,41 @@ event_options = {
 }
 
 event_labels = list(event_options.items())
-event_cols = st.columns(5)
+button_cols = st.columns(len(event_labels))
 
-for i in range(5):
-    key, label = event_labels[i]
-    with event_cols[i]:
+for i, (key, label) in enumerate(event_labels):
+    with button_cols[i]:
         if st.button(label, key=key):
             st.session_state.event_type = key
 
 event_type = st.session_state.event_type
-st.caption(f"Selected event: **{event_type}**")
+st.caption(f"**Selected Event:** {event_type}")
 
-# Greekness slider
+# Greekness Slider with style
 MAX_DELAY_MINUTES = 46
+DELAY_VARIANCE = 3
 
 st.markdown("### How Greek is your Greek?")
+
+slider_css = """
+<style>
+.stSlider > div[data-baseweb="slider"] > div {
+    background: linear-gradient(to right, #0D5BA1 0%, #0D5BA1 100%) !important;
+}
+</style>
+"""
+st.markdown(slider_css, unsafe_allow_html=True)
+
 greekness_score = st.slider(
-    "Slide to increase the probability of delay.",
+    "Slide to increase Greekness.",
     min_value=0,
     max_value=100,
     value=30,
-    step=1,
-    help="0 = Barely Greek, 100 = Spoke to their mom 12 times today"
+    step=1
 )
 
-mod_minutes = round((greekness_score / 100) * MAX_DELAY_MINUTES)
+raw_delay = (greekness_score / 100) * MAX_DELAY_MINUTES
+mod_minutes = round(raw_delay + random.uniform(-DELAY_VARIANCE, DELAY_VARIANCE))
 
 if greekness_score == 0:
     greek_profile = "Barely Greek"
@@ -74,7 +84,11 @@ elif greekness_score < 75:
 else:
     greek_profile = "Extremely Greek"
 
-st.caption(f"Profile: **{greek_profile}** | Estimated delay: **{mod_minutes} min**")
+st.markdown(f"""
+<div style="padding: 0.5rem 0; font-size: 1.1rem;">
+🧪 <strong>Estimated Additional Delay Factor:</strong> <span style="color:#0D5BA1;"><strong>{greek_profile}</strong></span> (≈ <strong>{mod_minutes} min</strong>)
+</div>
+""", unsafe_allow_html=True)
 
 # Delay logic
 lateness_factors = {
@@ -103,13 +117,13 @@ elif greekness_score <= 75:
 else:
     joke_lines = [
         "Spinning souvlaki logic cores...",
-        "Recounting last-minute family emergencies...",
+        "Recounting last-minute emergencies...",
         "Greeksplaining traffic to a satellite..."
     ]
 
 st.divider()
 
-# Core calculator logic
+# Core logic
 if mode == "When will the Greek actually arrive?":
     user_time = st.time_input("🕒 Scheduled time")
     if st.button("📡 Predict Arrival"):
@@ -127,22 +141,20 @@ else:
         desired = datetime.combine(datetime.today(), desired_time)
         invite_time = desired - timedelta(minutes=total_delay)
         st.success(f"📬 You should tell the Greek that the event is at **{invite_time.strftime('%H:%M')}**.")
-        st.caption("They’ll still be 3 minutes late. And blame traffic caused by a priest's funeral.")
+        st.caption("They’ll still be 3 minutes late. And blame traffic.")
 
 st.divider()
 
-# Tips & Tricks section
+# Tips & Tricks
 st.markdown("## Tips & Tricks to Make Greeks Arrive Sooner")
 st.markdown("""
 - **Say it’s a nameday and there’s free food.** Instant teleportation.
 - **Tell them everyone’s already there.** Greek shame is real.
-- **Mention someone is parking in their usual spot.** They’ll storm out.
 - **Text: “they’re talking politics without you.”** They'll break speed limits.
-- **Say their mom is waiting.** Fear beats inertia.
 - **Only Turk joke:** _“Apparently the Turks always arrive on time.”_ Guaranteed panic.
 """)
 
-# Tech section
+# Tech explanation
 st.markdown("## 🤖 The Technology Behind GreekTime Predictor")
 st.markdown("""
 GreekTime Predictor is powered by a proprietary delay estimation engine built on bleeding-edge technologies, including:
@@ -153,7 +165,7 @@ GreekTime Predictor is powered by a proprietary delay estimation engine built on
 - **Geolocation Interference Algorithms**, factoring in bakery stops, soccer rants, and accidental beach detours.
 - **Mood-Lag Analytics**, adjusting arrival time based on how many times they've said “malaka” today.
 
-Each result is reviewed by a certified uncle from Thessaloniki with access to a chair, a cigarette, and mystical powers.
+Each result is reviewed by our dedicated support team on Mount Athos.
 """)
 
 # FAQ
@@ -161,13 +173,13 @@ st.divider()
 st.markdown("## ❓ FAQ")
 
 with st.expander("Why is my Greek coworker always late?"):
-    st.markdown("They aren't late — **you're just early in the wrong culture.** Also: there was traffic, a chatty neighbor, and the need for coffee.")
+    st.markdown("They aren't late,  **you're just early in the wrong culture.** Also: there was traffic, an ourgent call, and a need for coffee.")
 
 with st.expander("What if they're on time?"):
-    st.markdown("It’s either a trap, or their mom made them leave early. Tread carefully.")
+    st.markdown("It’s a trap, avoid eye contact. Tread carefully.")
 
 with st.expander("Does this work for Cypriots?"):
     st.markdown("Yes, but you’ll need to apply a **+45% regional buffer** and triple-check political sensitivities.")
 
 with st.expander("Is this scientifically accurate?"):
-    st.markdown("More accurate than most weather apps, less accurate than your Greek aunt’s gossip. Calibrated to within ±3 souvlakis.")
+    st.markdown("More accurate than most weather apps, less accurate than the office gossip. Calibrated to within ±3 souvlakis.")

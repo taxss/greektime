@@ -3,21 +3,18 @@ import time
 import random
 from datetime import datetime, timedelta
 
-# App config
+# Config
 st.set_page_config(page_title="GreekTime Predictor", page_icon="🇬🇷", layout="wide")
 
-# Logo & Header
-st.markdown(
-    """
-    <div style="text-align: center;">
-        <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//output-onlinepngtools.png"
-             alt="GreekTime Predictor Logo"
-             style="max-width: 220px; margin-bottom: 0.5rem;">
-        <p style="font-style: italic; color: gray;">Advanced Ai Calendar De-Greekifier, for free!</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Logo
+st.markdown("""
+<div style="text-align: center;">
+    <img src="https://tzxivjnghmvwnizzfwrh.supabase.co/storage/v1/object/public/pics//output-onlinepngtools.png"
+         alt="GreekTime Predictor Logo"
+         style="max-width: 220px; margin-bottom: 0.5rem;">
+    <p style="font-style: italic; color: gray;">Advanced Ai Calendar De-Greekifier, for free!</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Mode selection
 mode = st.radio("Choose your mode:", [
@@ -25,29 +22,35 @@ mode = st.radio("Choose your mode:", [
     "When to invite a Greek so they’re on time?"
 ])
 
-# Event buttons
+# Event type buttons in grid
 st.markdown("### What kind of event is it?")
-col1, col2, col3 = st.columns(3)
-with col1:
-    if st.button("🧃 Casual Hangout"):
-        event_type = "Casual hangout"
-with col2:
-    if st.button("🍽️ Dinner"):
-        event_type = "Dinner"
-with col3:
-    if st.button("💼 Work Meeting"):
-        event_type = "Work meeting"
-col4, col5 = st.columns(2)
-with col4:
-    if st.button("📊 Serious Meeting"):
-        event_type = "Serious meeting"
-with col5:
-    if st.button("🎉 Special Event"):
-        event_type = "Special event"
-if 'event_type' not in locals():
-    event_type = "Casual hangout"
+
+if "event_type" not in st.session_state:
+    st.session_state.event_type = "Casual hangout"
+
+event_options = {
+    "Casual hangout": "🧃 Casual Hangout",
+    "Dinner": "🍽️ Dinner",
+    "Work meeting": "💼 Work Meeting",
+    "Serious meeting": "📊 Serious Meeting",
+    "Special event": "🎉 Special Event"
+}
+
+event_labels = list(event_options.items())
+event_cols = st.columns(5)
+
+for i in range(5):
+    key, label = event_labels[i]
+    with event_cols[i]:
+        if st.button(label, key=key):
+            st.session_state.event_type = key
+
+event_type = st.session_state.event_type
+st.caption(f"Selected event: **{event_type}**")
 
 # Greekness slider
+MAX_DELAY_MINUTES = 46
+
 st.markdown("### How Greek is your Greek?")
 greekness_score = st.slider(
     "Slide to increase the probability of delay.",
@@ -55,13 +58,11 @@ greekness_score = st.slider(
     max_value=100,
     value=30,
     step=1,
-    help="0 = Barely Greek, 100 = Dionysus reborn"
+    help="0 = Barely Greek, 100 = Spoke to their mom 12 times today"
 )
 
-# Delay scale: 0–30 min
-mod_minutes = round((greekness_score / 100) * 30)
+mod_minutes = round((greekness_score / 100) * MAX_DELAY_MINUTES)
 
-# Dynamic profile label
 if greekness_score == 0:
     greek_profile = "Barely Greek"
 elif greekness_score < 25:
@@ -86,33 +87,29 @@ lateness_factors = {
 base_minutes = lateness_factors.get(event_type, 10)
 total_delay = base_minutes + mod_minutes
 
-# Spinner jokes based on Greekness level
-mild_jokes = [
-    "Consulting Greek calendar...",
-    "Charging GPS...",
-    "Counting ouzos...",
-]
-moderate_jokes = [
-    "Consulting yiayia’s calendar...",
-    "Lighting a freddospresso...",
-    "Staring at sandals waiting for movement...",
-]
-extreme_jokes = [
-    "Spinning komboloi beads with maximum intention...",
-    "Double-checking WhatsApp excuses...",
-    "Greeksplaining traffic to a satnav...",
-]
-
+# Spinner jokes
 if greekness_score <= 25:
-    joke_lines = mild_jokes
+    joke_lines = [
+        "Tuning the komboloi...",
+        "Adjusting frappe viscosity...",
+        "Charging the GPS..."
+    ]
 elif greekness_score <= 75:
-    joke_lines = moderate_jokes
+    joke_lines = [
+        "Consulting yiayia’s calendar...",
+        "Lighting a freddospresso...",
+        "Warming up excuses module..."
+    ]
 else:
-    joke_lines = extreme_jokes
+    joke_lines = [
+        "Spinning souvlaki logic cores...",
+        "Recounting last-minute family emergencies...",
+        "Greeksplaining traffic to a satellite..."
+    ]
 
 st.divider()
 
-# Core logic
+# Core calculator logic
 if mode == "When will the Greek actually arrive?":
     user_time = st.time_input("🕒 Scheduled time")
     if st.button("📡 Predict Arrival"):
@@ -130,45 +127,47 @@ else:
         desired = datetime.combine(datetime.today(), desired_time)
         invite_time = desired - timedelta(minutes=total_delay)
         st.success(f"📬 You should tell the Greek that the event is at **{invite_time.strftime('%H:%M')}**.")
-        st.caption("They’ll still be 3 minutes late. Or say ‘I'm 5 minutes away’ from another country.")
+        st.caption("They’ll still be 3 minutes late. And blame traffic caused by a priest's funeral.")
 
 st.divider()
 
-# Tips & Tricks
-st.markdown("## 🧠 Tips & Tricks to Make Greeks Arrive Sooner (or Less Late)")
+# Tips & Tricks section
+st.markdown("## Tips & Tricks to Make Greeks Arrive Sooner")
 st.markdown("""
-- **Blame the Turks.** Doesn’t matter how. “The Turks are never late” often works.
-- **Say there's free parking, even if there isn't.** It’s called tactical misinformation.
-- **Tell them their ex is already inside.** Rage is more powerful than coffee.
-- **Mention “unlimited mezze.”** Greeks have built cities for less.
-- **Say the start time was published in a Turkish newspaper.** They will show up 15 minutes early on principle.
+- **Say it’s a nameday and there’s free food.** Instant teleportation.
+- **Tell them everyone’s already there.** Greek shame is real.
+- **Mention someone is parking in their usual spot.** They’ll storm out.
+- **Text: “they’re talking politics without you.”** They'll break speed limits.
+- **Say their mom is waiting.** Fear beats inertia.
+- **Only Turk joke:** _“Apparently the Turks always arrive on time.”_ Guaranteed panic.
 """)
 
-# Tech explanation
+# Tech section
 st.markdown("## 🤖 The Technology Behind GreekTime Predictor")
 st.markdown("""
-GreekTime Predictor runs on an advanced stack blending AI, quantum computing, and geopolitical databases. Key components include:
+GreekTime Predictor is powered by a proprietary delay estimation engine built on bleeding-edge technologies, including:
 
-- **Quantum Probability Modeling** trained on Cycladic ferry data and Byzantine transcripts.
-- **Space-grade Delay Propagation Systems**, originally developed to model time distortion in interstellar travel.
-- **Neural Excuse Networks (NENs)** trained on 87,000 Greek text messages containing the words “sorry,” “traffic,” and “you won’t believe this.”
-- **Emotional Latency Indexing**, which adjusts arrival times based on mood swings, political arguments, and Mercury retrograde.
+- **Quantum Probability Modeling**, trained on ferry timetables and Athenian café density data.
+- **Space-grade Delay Propagation Systems**, originally developed for spacecraft reentry but retooled to measure cousin-related delays.
+- **Neural Excuse Networks (NENs)**, trained on 87,000+ Greek WhatsApp apologies.
+- **Geolocation Interference Algorithms**, factoring in bakery stops, soccer rants, and accidental beach detours.
+- **Mood-Lag Analytics**, adjusting arrival time based on how many times they've said “malaka” today.
 
-Each prediction is independently validated by our dedicated team on Mount Athos.
+Each result is reviewed by a certified uncle from Thessaloniki with access to a chair, a cigarette, and mystical powers.
 """)
 
 # FAQ
 st.divider()
-st.markdown("## ❓ Frequently Asked Questions")
+st.markdown("## ❓ FAQ")
 
 with st.expander("Why is my Greek coworker always late?"):
-    st.markdown("They aren't late, **you're just early or wrong.** Also: they needed to stop for a coffee, a phone call, a souvlaki, or an existential crisis.")
+    st.markdown("They aren't late — **you're just early in the wrong culture.** Also: there was traffic, a chatty neighbor, and the need for coffee.")
 
 with st.expander("What if they're on time?"):
-    st.markdown("It's a trap. Remain calm, don't make eye contact, and check your calendar again.")
+    st.markdown("It’s either a trap, or their mom made them leave early. Tread carefully.")
 
 with st.expander("Does this work for Cypriots?"):
-    st.markdown("Yes, but with **+45% delay buffer** and higher risk of political debate on arrival.")
+    st.markdown("Yes, but you’ll need to apply a **+45% regional buffer** and triple-check political sensitivities.")
 
-with st.expander("Is it scientifically accurate?"):
-    st.markdown("More accurate than your last 3 relationships. Calibrated to within ±3 souvlakis.")
+with st.expander("Is this scientifically accurate?"):
+    st.markdown("More accurate than most weather apps, less accurate than your Greek aunt’s gossip. Calibrated to within ±3 souvlakis.")

@@ -35,10 +35,10 @@ greek_profile = st.selectbox("What kind of Greek are we dealing with?", [
 
 # Calculation logic
 lateness_factors = {
-    "Casual hangout": 23,
-    "Dinner": 18,
-    "Work meeting": 10,
-    "Serious meeting": 5,
+    "Casual hangout": 33,
+    "Dinner": 22,
+    "Work meeting": 16,
+    "Serious meeting": 8,
     "Special event": 30
 }
 
@@ -60,7 +60,7 @@ joke_lines = [
     "Double-checking WhatsApp read receipts...",
     "Greeksplaining the delay...",
     "Consulting yiayia’s calendar...",
-    "Lighting a frappe and praying for punctuality..."
+    "Lighting a freddospresso and praying for punctuality..."
 ]
 
 st.divider()

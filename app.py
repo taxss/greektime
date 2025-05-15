@@ -53,13 +53,7 @@ DELAY_VARIANCE = 3
 
 st.markdown("### How Greek is your Greek?")
 
-slider_css = """
-<style>
-.stSlider > div[data-baseweb="slider"] > div {
-    background: linear-gradient(to right, #0D5BA1 0%, #0D5BA1 100%) !important;
-}
-</style>
-"""
+
 st.markdown(slider_css, unsafe_allow_html=True)
 
 greekness_score = st.slider(
@@ -155,7 +149,7 @@ st.markdown("""
 """)
 
 # Tech explanation
-st.markdown("## 🤖 The Technology Behind GreekTime Predictor")
+st.markdown("##The Technology Behind GreekTime Predictor")
 st.markdown("""
 GreekTime Predictor is powered by a proprietary delay estimation engine built on bleeding-edge technologies, including:
 

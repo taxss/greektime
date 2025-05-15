@@ -87,7 +87,7 @@ else:
 
 st.markdown(f"""
 <div style="padding: 0.5rem 0; font-size: 1.1rem;">
-🧪 <strong>Estimated Additional Delay Factor:</strong> <span style="color:#0D5BA1;"><strong>{greek_profile}</strong></span> (≈ <strong>{mod_minutes} min</strong>)
+<strong>Estimated Additional Delay Factor:</strong> <span style="color:#0D5BA1;"><strong>{greek_profile}</strong></span> (≈ <strong>{mod_minutes} min</strong>)
 </div>
 """, unsafe_allow_html=True)
 
